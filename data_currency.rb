@@ -3,7 +3,12 @@ require 'csv'
 class DataCurrency
     def initialize(filename)
         @filename = filename
-        @history = File.read(@filename)
+        @history = CSV.read(@filename, :headers => true)
+        puts @history
+    end
+
+    def history
+      @history
     end
 end
 # // Data.prototype.getBuyPrice = function(startDate, endDate){
