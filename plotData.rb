@@ -1,5 +1,6 @@
 require('./util.rb')
 require 'openssl'
+require 'yaml'
 require('plotly')
 
 RSILowValue = 30
@@ -8,7 +9,9 @@ RSIPeriod = 14
 
 class PlotData
     def initialize exchangeRateUSDHistory, algorithmType
-        plotly = PlotLy.new('vcharretier', 'KRGpk3y9XhZRmVuMfYAy')
+        config = YAML.load_file('./config_plotly.yml')
+
+        @plotly = PlotLy.new(config['plotly']['username'], config['plotly']['private_key'])
         @exchangeRateUSDHistory = exchangeRateUSDHistory
         @algorithmType = algorithmType
 
@@ -41,7 +44,6 @@ class PlotData
         @cryptoValueArray.push(@exchangeRateUSDHistory[index][4])
 
         if index > RSIPeriod
-              puts @exchangeRateUSDHistory
               rsi = 50#@util.getRSI(@exchangeRateUSDHistory.slice(index-RSIPeriod, index).map(a => a[4]), index)
             if rsi < RSILowValue
                 @RSILowArray.push(@exchangeRateUSDHistory[index][4])
@@ -150,7 +152,7 @@ class PlotData
 
     def plotData
         graphOptions = {layout: @layout, filename: "date-axes", fileopt: "overwrite"}
-        plotly.plot(@data, graphOptions) do |err, msg|
+        @plotly.plot(@data, graphOptions) do |err, msg|
             puts msg
             puts err
         end
