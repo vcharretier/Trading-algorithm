@@ -11,7 +11,7 @@ def RunAlgo algo, account, exchangeRateUSDHistory
     #rsiData = RSIData.new(plotData, RSI_PERIOD, RSI_HIGH_VALUE, RSI_LOW_VALUE)
 
     for i in 0..exchangeRateUSDHistory.length-1
-        algo.update(exchangeRateUSDHistory[i][4])
+        algo.update(exchangeRateUSDHistory[i]['Close'])
         plotData.update(i, account)
         #rsiData.update(i, account)
     end
@@ -29,10 +29,10 @@ RSI_LOW_VALUE = 30
 RSI_HIGH_VALUE = 70
 RSI_PERIOD = 14
 
-for k in 0..1
+for k in 0..0
     account = Account.new(10000)
     exchangeRateUSDHistory = data.history
     RunAlgo(SimpleAlgo.new(account, RSI_PERIOD, RSI_LOW_VALUE, RSI_HIGH_VALUE), account, exchangeRateUSDHistory)
-    balanceUSD = account.balanceUSD(exchangeRateUSDHistory[exchangeRateUSDHistory.length-1][4])
+    balanceUSD = account.balanceUSD(exchangeRateUSDHistory[exchangeRateUSDHistory.length-1]['Close'])
     puts RSI_PERIOD.to_s + "," + RSI_LOW_VALUE.to_s + "," + RSI_HIGH_VALUE.to_s + "," + balanceUSD.to_s
 end

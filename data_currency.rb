@@ -3,8 +3,7 @@ require 'csv'
 class DataCurrency
     def initialize(filename)
         @filename = filename
-        @history = CSV.read(@filename, :headers => true)
-        puts @history
+        @history = CSV.read(@filename, headers:true)
     end
 
     def history
