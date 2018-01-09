@@ -49,9 +49,7 @@ class PlotData
               for k in index-RSIPeriod .. index
                 lastRSIPeriodLengthPrice << @exchangeRateUSDHistory[k]['Close']
               end
-              #puts lastRSIPeriodLengthPrice
               rsi = @util.getRSI(lastRSIPeriodLengthPrice)
-              puts rsi
             if rsi < RSILowValue
                 @RSILowArray.push(@exchangeRateUSDHistory[index]['Close'])
                 @RSILowDateArray.push(currentDate)

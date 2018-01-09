@@ -1,12 +1,12 @@
 require './util.rb'
 
-util = Util.new
 
 class Account
 
     def initialize fundsUSD
       @fundsUSD = fundsUSD
       @fundsCrypto = 0
+      @util = Util.new
     end
 
     def buy amountUSD, exchangeRateUSD
@@ -15,7 +15,7 @@ class Account
             #puts "NotEnoughUSDFundsException"
         else
             @fundsUSD -= amountUSD
-            @fundsCrypto += (amountUSD/exchangeRateUSD)-(util.getTransactionFeeUSD(amountUSD)/exchangeRateUSD)
+            @fundsCrypto += (amountUSD/exchangeRateUSD)-(@util.getTransactionFeeUSD(amountUSD)/exchangeRateUSD)
         end
     end
 
@@ -24,7 +24,7 @@ class Account
             #throw new Error('NotEnoughCryptoFundsException');
             #puts "NotEnoughCryptoFundsException"
         else
-            @fundsUSD += amountUSD-util.getTransactionFeeUSD(amountUSD)
+            @fundsUSD += amountUSD-(@util.getTransactionFeeUSD(amountUSD))
             @fundsCrypto -= amountUSD/exchangeRateUSD
         end
     end

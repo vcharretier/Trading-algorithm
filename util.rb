@@ -40,7 +40,7 @@ class Util
         averageLoss = 0
         firstRS = 0
 
-        for j in 0..data.length-1
+        for j in 0..data.length-2
             change = data[j+1].to_f - data[j].to_f
             if change < 0
                 sumLoss += change.abs
