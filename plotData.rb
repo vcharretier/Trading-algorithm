@@ -36,7 +36,7 @@ class PlotData
     end
 
     def update index, account
-        currentDate = Date.parse(@exchangeRateUSDHistory[index][0])
+        currentDate = DateTime.parse(@exchangeRateUSDHistory[index][0])
         @dateArray << currentDate
         @balanceUSDArray.push(account.balanceUSD(@exchangeRateUSDHistory[index]['Close']))
         @fundsUSDArray.push(account.fundsUSD)
