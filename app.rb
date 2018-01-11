@@ -4,19 +4,19 @@ require('./simple_algo.rb')
 #require('./static_algo.rb')
 require('./account.rb')
 require('./plotData.rb')
-#require('./RSIData.rb')
+require('./rsiData.rb')
 
 def RunAlgo algo, account, exchangeRateUSDHistory
     plotData = PlotData.new(exchangeRateUSDHistory, algo.name)
-    #rsiData = RSIData.new(plotData, RSI_PERIOD, RSI_HIGH_VALUE, RSI_LOW_VALUE)
+    rsiData = RSIData.new(plotData, RSI_PERIOD, RSI_HIGH_VALUE, RSI_LOW_VALUE)
 
     for i in 0..exchangeRateUSDHistory.length-1
         algo.update(exchangeRateUSDHistory[i]['Close'].to_i)
         plotData.update(i, account)
-        #rsiData.update(i, account)
+        rsiData.update(i, account)
     end
     plotData.prepareData()
-    #rsiData.prepareData()
+    rsiData.prepareData()
     plotData.plotData()
 end
 
@@ -30,7 +30,7 @@ RSI_HIGH_VALUE = 70
 RSI_PERIOD = 14
 
 for k in 0..0
-    account = Account.new(1000)
+    account = Account.new(10000)
     exchangeRateUSDHistory = data.history
     RunAlgo(SimpleAlgo.new(account, RSI_PERIOD, RSI_LOW_VALUE, RSI_HIGH_VALUE), account, exchangeRateUSDHistory)
     balanceUSD = account.balanceUSD(exchangeRateUSDHistory[exchangeRateUSDHistory.length-1]['Close'].to_i)

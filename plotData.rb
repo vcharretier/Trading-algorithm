@@ -21,15 +21,6 @@ class PlotData
         @fundsCryptoArray = []
         @cryptoValueArray = []
 
-        @RSILowArray = []
-        @RSILowDateArray = []
-        @RSIHighArray = []
-        @RSIHighDateArray = []
-        @RSIValueArray = []
-        @RSIValueDateArray = []
-        @RSILowerLineArray = []
-        @RSIHigherLineArray = []
-
         @util = Util.new()
 
         @data = []
@@ -42,26 +33,6 @@ class PlotData
         @fundsUSDArray.push(account.fundsUSD)
         @fundsCryptoArray.push(account.fundsCrypto)
         @cryptoValueArray.push(@exchangeRateUSDHistory[index]['Close'])
-
-        if index > RSIPeriod
-              rsi = 50#@util.getRSI(@exchangeRateUSDHistory.slice(index-RSIPeriod, index).map(a => a['Close']), index)
-              lastRSIPeriodLengthPrice = []
-              for k in index-RSIPeriod .. index
-                lastRSIPeriodLengthPrice << @exchangeRateUSDHistory[k]['Close']
-              end
-              rsi = @util.getRSI(lastRSIPeriodLengthPrice)
-            if rsi < RSILowValue
-                @RSILowArray.push(@exchangeRateUSDHistory[index]['Close'])
-                @RSILowDateArray.push(currentDate)
-            elsif rsi > RSIHighValue
-                @RSIHighArray.push(@exchangeRateUSDHistory[index]['Close'])
-                @RSIHighDateArray.push(currentDate)
-            end
-            @RSIValueArray.push(rsi)
-            @RSIValueDateArray.push(currentDate)
-        end
-        @RSILowerLineArray.push(RSILowValue)
-        @RSIHigherLineArray.push(RSIHighValue)
     end
 
     def prepareData
@@ -94,54 +65,12 @@ class PlotData
             #type: "scatter",
             name: "Ƀ value in $"
             }
-        rsiLowData =
-            {
-            x: @RSILowDateArray,
-            y: @RSILowArray,
-            mode: "markers",
-            type: "scatter",
-            name: "RSI-"+@RSIPeriod.to_s+" below "+@RSILowValue.to_s
-            }
-        rsiHighData =
-            {
-            x: @RSIHighDateArray,
-            y: @RSIHighArray,
-            mode: "markers",
-            type: "scatter",
-            name: "RSI-"+@RSIPeriod.to_s+" above "+@RSIHighValue.to_s
-            }
-        rsiValueData ={
-            x: @RSIValueDateArray,
-            y: @RSIValueArray,
-            type: "scatter",
-            name: "RSI-"+@RSIPeriod.to_s+" value",
-            yaxis: "y3",
-            xaxis: "x"
-            }
-        rsiHigherLineData ={
-            x: @dateArray,
-            y: @RSIHigherLineArray,
-            type: "scatter",
-            yaxis: "y3",
-            xaxis: "x"
-            }
-        rsiLowerLineData ={
-            x: @dateArray,
-            y: @RSILowerLineArray,
-            type: "scatter",
-            yaxis: "y3",
-            xaxis: "x"
-            }
-        @data = [balanceUSDData,fundsUSDData,fundsCryptoData,cryptoValueData, rsiLowData, rsiHighData, rsiValueData, rsiHigherLineData, rsiLowerLineData]
+        @data = [balanceUSDData,fundsUSDData,fundsCryptoData,cryptoValueData]
         @layout = {
             title: @algorithmType,
             yaxis: {
                 title: "$",
                 domain: [0, 0.65]
-            },
-            yaxis3: {
-                title: "RSI",
-                domain: [0.75, 1]
             },
             yaxis2: {
                 title: "Ƀ",
@@ -151,9 +80,22 @@ class PlotData
         }
     end
 
-    def addData newData
-        @data.push(newData)
+    def exchangeRateUSDHistory
+      @exchangeRateUSDHistory
     end
+
+    def data
+      @data
+    end
+
+    def dateArray
+      @dateArray
+    end
+
+    def layout
+      @layout
+    end
+
 
     def plotData
         graphOptions = {layout: @layout, filename: "date-axes", fileopt: "overwrite"}
