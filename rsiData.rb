@@ -26,7 +26,7 @@ class RSIData
     def update index, account
         currentDate = DateTime.parse(@exchangeRateUSDHistory[index][0])
 
-        if index > @RSIPeriod
+        if index >= @RSIPeriod
               lastRSIPeriodLengthPrice = []
               for k in index-@RSIPeriod .. index
                 lastRSIPeriodLengthPrice << @exchangeRateUSDHistory[k]['Close']
@@ -85,7 +85,7 @@ class RSIData
             yaxis: "y3",
             xaxis: "x"
             }
-        @plotBasicData.data << rsiLowData #[rsiLowData, rsiHighData, rsiValueData, rsiHigherLineData, rsiLowerLineData]
+        @plotBasicData.data << rsiLowData
         @plotBasicData.data << rsiHighData
         @plotBasicData.data << rsiValueData
         @plotBasicData.data << rsiHigherLineData
@@ -95,21 +95,5 @@ class RSIData
               title: "RSI",
               domain: [0.75, 1]
           }
-      # @layout = {
-      #     title: @algorithmType,
-      #     yaxis: {
-      #         title: "$",
-      #         domain: [0, 0.65]
-      #     },
-      #     yaxis3: {
-      #         title: "RSI",
-      #         domain: [0.75, 1]
-      #     },
-      #     yaxis2: {
-      #         title: "Ƀ",
-      #         overlaying: "y",
-      #         side: "right"
-      #     }
-      #}
     end
 end
