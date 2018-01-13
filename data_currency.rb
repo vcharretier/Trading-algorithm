@@ -1,5 +1,3 @@
-require 'csv'
-
 class DataCurrency
     def initialize(filename)
         @filename = filename

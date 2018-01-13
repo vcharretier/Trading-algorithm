@@ -1,7 +1,4 @@
 require('./util.rb')
-require 'openssl'
-require 'yaml'
-require('plotly')
 
 RSILowValue = 30
 RSIHighValue = 70

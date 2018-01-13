@@ -1,5 +1,3 @@
-require 'csv'
-
 class Util
   def writeFile filename, rsi_period_value, rsi_low_value, rsi_high_value, balanceUSDValue
       if !File.existsSync(filename)

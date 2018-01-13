@@ -1,0 +1,18 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    json (2.1.0)
+    openssl (2.0.5)
+    plotly (0.0.1)
+      json
+
+PLATFORMS
+  x64-mingw32
+
+DEPENDENCIES
+  json
+  openssl (= 2.0.5)
+  plotly
+
+BUNDLED WITH
+   1.16.1
