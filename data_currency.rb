@@ -1,15 +1,11 @@
-class DataCurrency
-    def initialize(filename)
-        @filename = filename
-        @history = CSV.read(@filename, headers:true)
-    end
+require('csv')
 
-    def history
-      @history
-    end
+# Ouvre fichier csv
+class DataCurrency
+  def initialize(filename)
+    @filename = filename
+    @history = CSV.read(@filename, headers: true)
+  end
+
+  attr_reader :history
 end
-# // Data.prototype.getBuyPrice = function(startDate, endDate){
-# //     return jsonQuery('[* Date <= '+startDate+' & Date <= '+endDate+']', {
-# //     data: this.history
-# //     }).value
-# // };

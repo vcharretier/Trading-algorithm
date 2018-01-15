@@ -1,43 +1,40 @@
 require './util.rb'
 
-
+# Compte...
 class Account
+  def initialize(funds_usd)
+    @funds_usd = funds_usd
+    @funds_crypto = 0
+    @util = Util.new
+  end
 
-    def initialize fundsUSD
-      @fundsUSD = fundsUSD
-      @fundsCrypto = 0
-      @util = Util.new
+  def buy(amount_usd, exchange_rate_usd)
+    if (@funds_usd - amount_usd) < 0
+    # throw new Error('NotEnoughUSDFundsException');
+    # puts "NotEnoughUSDFundsException"
+    else
+        @funds_usd -= amount_usd
+        @funds_crypto +=
+          (amount_usd / exchange_rate_usd) -
+          (@util.getTransactionFeeUSD(amount_usd) / exchange_rate_usd)
     end
+  end
 
-    def buy amountUSD, exchangeRateUSD
-        if (@fundsUSD - amountUSD) < 0
-            #throw new Error('NotEnoughUSDFundsException');
-            #puts "NotEnoughUSDFundsException"
-        else
-            @fundsUSD -= amountUSD
-            @fundsCrypto += (amountUSD/exchangeRateUSD)-(@util.getTransactionFeeUSD(amountUSD)/exchangeRateUSD)
-        end
+  def sell(amount_usd, exchange_rate_usd)
+    if (@funds_crypto - amount_usd / exchange_rate_usd) < 0
+    # throw new Error('NotEnoughCryptoFundsException');
+    # puts "NotEnoughCryptoFundsException"
+    else
+        @funds_usd += amount_usd - @util.getTransactionFeeUSD(amount_usd)
+        @funds_crypto -= amount_usd / exchange_rate_usd
     end
+  end
 
-    def sell amountUSD, exchangeRateUSD
-        if (@fundsCrypto - amountUSD/exchangeRateUSD) < 0
-            #throw new Error('NotEnoughCryptoFundsException');
-            #puts "NotEnoughCryptoFundsException"
-        else
-            @fundsUSD += amountUSD-(@util.getTransactionFeeUSD(amountUSD))
-            @fundsCrypto -= amountUSD/exchangeRateUSD
-        end
-    end
+  def balance_usd(exchange_rate_usd)
+    (@funds_crypto * exchange_rate_usd.to_f) + @funds_usd
+  end
 
-    def balanceUSD exchangeRateUSD
-        return (@fundsCrypto*exchangeRateUSD.to_f) + @fundsUSD
-    end
+  attr_reader :funds_usd
 
-    def fundsUSD
-      @fundsUSD
-    end
-
-    def fundsCrypto
-      @fundsCrypto
-    end
+  attr_reader :funds_crypto
 end

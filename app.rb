@@ -1,38 +1,41 @@
 require('./data_currency.rb')
-#require('./random_algo.rb')
+# require('./random_algo.rb')
 require('./simple_algo.rb')
-#require('./static_algo.rb')
+# require('./static_algo.rb')
 require('./account.rb')
-require('./plotData.rb')
-require('./rsiData.rb')
+require('./plot_data.rb')
+require('./rsi_data.rb')
 
-def RunAlgo algo, account, exchangeRateUSDHistory
-    plotData = PlotData.new(exchangeRateUSDHistory, algo.name)
-    rsiData = RSIData.new(plotData, RSI_PERIOD, RSI_HIGH_VALUE, RSI_LOW_VALUE)
+def run_algo(algo, account, exchange_rate_usd_histo)
+  plot_data = PlotData.new(exchange_rate_usd_histo, algo.name)
+  #rsi_data = RSIData.new(plot_data, RSI_PERIOD, RSI_HIGH_VALUE, RSI_LOW_VALUE)
 
-    for i in 0..exchangeRateUSDHistory.length-1
-        algo.update(exchangeRateUSDHistory[i]['Close'].to_i)
-        plotData.update(i, account)
-        rsiData.update(i, account)
-    end
-    plotData.prepareData()
-    rsiData.prepareData()
-    plotData.plotData()
+  Array(0...exchange_rate_usd_histo.length).each do |i|
+    algo.update(exchange_rate_usd_histo[i]['Close'].to_i)
+    plot_data.update(i, account)
+    #rsi_data.update(i)
+  end
+  plot_data.prepare_data
+  #rsi_data.prepare_data
+  plot_data.plot_data
 end
 
 data = DataCurrency.new('csv/BTC_hour.csv')
-
-filename = "C:/Temp/result.csv"
-balanceUSD = 0
 
 RSI_LOW_VALUE = 30
 RSI_HIGH_VALUE = 70
 RSI_PERIOD = 14
 
-for k in 0..0
-    account = Account.new(10000)
-    exchangeRateUSDHistory = data.history
-    RunAlgo(SimpleAlgo.new(account, RSI_PERIOD, RSI_LOW_VALUE, RSI_HIGH_VALUE), account, exchangeRateUSDHistory)
-    balanceUSD = account.balanceUSD(exchangeRateUSDHistory[exchangeRateUSDHistory.length-1]['Close'].to_i)
-    puts RSI_PERIOD.to_s + "," + RSI_LOW_VALUE.to_s + "," + RSI_HIGH_VALUE.to_s + "," + balanceUSD.to_s
-end
+account = Account.new(10_000)
+exchange_rate_usd_histo = data.history
+run_algo(
+  SimpleAlgo.new(account, RSI_PERIOD, RSI_LOW_VALUE, RSI_HIGH_VALUE),
+  account,
+  exchange_rate_usd_histo
+)
+balance_usd = account.balance_usd(
+  exchange_rate_usd_histo[exchange_rate_usd_histo.length - 1]['Close'].to_i
+)
+puts RSI_PERIOD.to_s +
+     ',' + RSI_LOW_VALUE.to_s + ',' + RSI_HIGH_VALUE.to_s + ',' +
+     balance_usd.to_s

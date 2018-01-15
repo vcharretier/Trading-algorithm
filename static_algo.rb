@@ -1,9 +1,13 @@
-def StaticAlgo account
-    account = account
-    alreadyBought = false
-    def update currentExchangeRateUSD
-        unless alreadyBought
-          account.buy(account.fundsUSD,currentExchangeRateUSD)
-          alreadyBought = true
+# Static Algo
+class StaticAlgo
+  def initialize(account)
+    @account = account
+    @already_bought = false
+  end
 
-module.exports = StaticAlgo
+  def update(current_exchange_rate_usd)
+    return if @already_bought
+    account.buy(account.fundsUSD, current_exchange_rate_usd)
+    @already_bought
+  end
+end
