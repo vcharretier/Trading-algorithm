@@ -2,6 +2,7 @@ require('./util.rb')
 require 'openssl'
 require 'yaml'
 require('plotly')
+require('time')
 
 # Data pour algo RSI
 class RSIData
@@ -25,7 +26,7 @@ class RSIData
   end
 
   def update(index)
-    current_date = DateTime.parse(@exchange_rate_usd_history[index][0])
+    current_date = Time.parse(@exchange_rate_usd_history[index][0])
     if index >= @rsi_period
       last_rsi_period_length_price = []
       Array(index - @rsi_period..index).each do |k|
@@ -99,9 +100,6 @@ class RSIData
       ]
     )
 
-    @plot_basic_data.layout[:yaxis3] = {
-      title: 'RSI',
-      domain: [0.75, 1]
-    }
+    @plot_basic_data.layout[:yaxis3] = { title: 'RSI', domain: [0.75, 1] }
   end
 end

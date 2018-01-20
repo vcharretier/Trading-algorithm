@@ -1,4 +1,5 @@
 require('./util.rb')
+require('time')
 
 # Pour tracer les courbes...
 class PlotData
@@ -24,7 +25,7 @@ class PlotData
   end
 
   def update(index, account)
-    current_date = DateTime.parse(@exchange_rate_usd_history[index][0])
+    current_date = Time.parse(@exchange_rate_usd_history[index][0])
     @date_array << current_date
     @balance_usd_array.push(
       account.balance_usd(@exchange_rate_usd_history[index]['Close'])
@@ -95,7 +96,6 @@ class PlotData
   attr_reader :layout
 
   def plot_data
-    puts @data
     graph_options = {
       layout: @layout,
       filename: 'date-axes',
