@@ -47,13 +47,12 @@ class Util
     else
       sum_gain = 0
       sum_loss = 0
-
       100 - (100 / (1 + check_sum(data, sum_gain, sum_loss)))
     end
   end
 
   def check_sum(data, sum_gain, sum_loss)
-    Array(0..data.length).each do |j|
+    Array(0...data.length - 1).each do |j|
       change = (data[j + 1].to_f - data[j].to_f).round(2)
       if change < 0
         sum_loss += change.abs

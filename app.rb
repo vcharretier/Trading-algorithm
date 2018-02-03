@@ -8,15 +8,15 @@ require('./rsi_data.rb')
 
 def run_algo(algo, account, exchange_rate_usd_histo)
   plot_data = PlotData.new(exchange_rate_usd_histo, algo.name)
-  # rsi_data = RSIData.new(plot_data, RSI_PERIOD, RSI_HIGH_VALUE, RSI_LOW_VALUE)
+  rsi_data = RSIData.new(plot_data, RSI_PERIOD, RSI_HIGH_VALUE, RSI_LOW_VALUE)
 
   Array(0...exchange_rate_usd_histo.length).each do |i|
     algo.update(exchange_rate_usd_histo[i]['Close'].to_i)
     plot_data.update(i, account)
-    # rsi_data.update(i)
+    rsi_data.update(i)
   end
   plot_data.prepare_data
-  # rsi_data.prepare_data
+  rsi_data.prepare_data
   plot_data.plot_data
 end
 
